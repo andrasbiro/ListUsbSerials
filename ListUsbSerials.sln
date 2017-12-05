@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27004.2010
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ListUSBSerials", "ListUsbSerials\ListUSBSerials.csproj", "{DE969587-E508-47D7-8C28-ADBB0DEF3A17}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DE969587-E508-47D7-8C28-ADBB0DEF3A17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE969587-E508-47D7-8C28-ADBB0DEF3A17}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE969587-E508-47D7-8C28-ADBB0DEF3A17}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE969587-E508-47D7-8C28-ADBB0DEF3A17}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {42EA8B59-4E84-4030-AE9B-1934F60640C5}
+	EndGlobalSection
+EndGlobal

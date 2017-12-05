@@ -1,0 +1,12 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="ListComPorts.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="terminal" Type="System.String" Scope="User">
+      <Value Profile="(Default)">c:\Program Files (x86)\teraterm\ttermpro.exe</Value>
+    </Setting>
+    <Setting Name="teminalargs" Type="System.String" Scope="User">
+      <Value Profile="(Default)">/BAUD=115200 /C={devicenum}</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
