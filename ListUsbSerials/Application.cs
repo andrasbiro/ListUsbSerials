@@ -30,81 +30,98 @@ namespace ListUsbSerials
             }
 
             //then, get the USB devices
-            string[] usbRoots = { "SYSTEM\\CurrentControlSet\\Enum\\USB", "SYSTEM\\CurrentControlSet\\Enum\\FTDIBUS" };
+            string[] usbRoots = { "SYSTEM\\CurrentControlSet\\Enum\\USB", "SYSTEM\\CurrentControlSet\\Enum\\FTDIBUS" }; 
             foreach (string usbRootStr in usbRoots) {
                 RegistryKey usbRoot = Registry.LocalMachine.OpenSubKey(usbRootStr);
-                foreach (string usbDevStr in usbRoot.GetSubKeyNames())
+                if (usbRoot != null)
                 {
-                    if (usbDevStr.StartsWith("VID_")) //not a root hub
+                    foreach (string usbDevStr in usbRoot.GetSubKeyNames())
                     {
-                        RegistryKey usbDev = usbRoot.OpenSubKey(usbDevStr);
-                        foreach (string usbEntityStr in usbDev.GetSubKeyNames())
+                        if (usbDevStr.StartsWith("VID_")) //not a root hub
                         {
-                            RegistryKey usbEntity = usbDev.OpenSubKey(usbEntityStr);
-                            object port = usbEntity.OpenSubKey("Device Parameters").GetValue("PortName");
-                            if ( port != null )
+                            RegistryKey usbDev = usbRoot.OpenSubKey(usbDevStr);
+                            if (usbDev != null)
                             {
-                                ListViewItem portData = new ListViewItem(port.ToString());
-                                portData.SubItems.Add(usbDevStr.Substring(usbDevStr.IndexOf("VID_")+4, 4));
-                                portData.SubItems.Add(usbDevStr.Substring(usbDevStr.IndexOf("PID_") + 4, 4));
-
-                                string serial = "";
-                                if (usbRootStr.EndsWith("FTDIBUS"))
+                                foreach (string usbEntityStr in usbDev.GetSubKeyNames())
                                 {
-                                    serial = usbDevStr.Substring(usbDevStr.LastIndexOf("+") + 1);
-                                    //last charachter is A for first serial, B for second etc. However, the port numbering should be in order
-                                    serial = serial.Substring(0, serial.Length-1);
-                                }
-                                else if ( usbDevStr.Contains("MI_") ){
-                                    string rootdevice = usbDevStr.Substring(0, usbDevStr.LastIndexOf("&MI"));
-                                    foreach( string serialId in usbRoot.OpenSubKey(rootdevice).GetSubKeyNames())
+                                    RegistryKey usbEntity = usbDev.OpenSubKey(usbEntityStr);
+                                    if (usbEntity != null)
                                     {
-                                        object parentPrefix = usbRoot.OpenSubKey(rootdevice + "\\" + serialId).GetValue("ParentIdPrefix");
-                                        if (parentPrefix != null && usbEntityStr.StartsWith(parentPrefix.ToString()))
-                                            serial = serialId;
+                                        RegistryKey devparms = usbEntity.OpenSubKey("Device Parameters");
+                                        if (devparms != null) {
+                                            object port = devparms.GetValue("PortName");
+                                            if (port != null)
+                                            {
+                                                ListViewItem portData = new ListViewItem(port.ToString());
+                                                portData.SubItems.Add(usbDevStr.Substring(usbDevStr.IndexOf("VID_") + 4, 4));
+                                                portData.SubItems.Add(usbDevStr.Substring(usbDevStr.IndexOf("PID_") + 4, 4));
+
+                                                string serial = "";
+                                                if (usbRootStr.EndsWith("FTDIBUS"))
+                                                {
+                                                    serial = usbDevStr.Substring(usbDevStr.LastIndexOf("+") + 1);
+                                                    //last charachter is A for first serial, B for second etc. However, the port numbering should be in order
+                                                    serial = serial.Substring(0, serial.Length - 1);
+                                                }
+                                                else if (usbDevStr.Contains("MI_"))
+                                                {
+                                                    string rootdevice = usbDevStr.Substring(0, usbDevStr.LastIndexOf("&MI"));
+                                                    foreach (string serialId in usbRoot.OpenSubKey(rootdevice).GetSubKeyNames())
+                                                    {
+                                                        object parentPrefix = usbRoot.OpenSubKey(rootdevice + "\\" + serialId).GetValue("ParentIdPrefix");
+                                                        if (parentPrefix != null && usbEntityStr.StartsWith(parentPrefix.ToString()))
+                                                            serial = serialId;
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    serial = usbEntityStr;
+                                                }
+                                                portData.SubItems.Add(serial);
+
+                                                object mfg = usbEntity.GetValue("Mfg");
+                                                if (mfg != null)
+                                                    portData.SubItems.Add(mfg.ToString().Substring(mfg.ToString().LastIndexOf(';') + 1));
+                                                else
+                                                    portData.SubItems.Add("");
+                                                object desc = usbEntity.GetValue("DeviceDesc");
+                                                if (desc != null)
+                                                    portData.SubItems.Add(desc.ToString().Substring(desc.ToString().LastIndexOf(';') + 1));
+                                                else
+                                                    portData.SubItems.Add("");
+
+                                                if (!activeSerials.Contains(port.ToString()))
+                                                {
+                                                    portData.ForeColor = SystemColors.GrayText;
+                                                    portData.BackColor = SystemColors.InactiveBorder;
+                                                    portData.Selected = false;
+                                                }
+                                                if (showDisconnected.Checked || portData.ForeColor != SystemColors.GrayText)
+                                                {
+                                                    portList.Items.Add(portData);
+                                                }
+                                            }
+                                            devparms.Close();
+                                        }
+                                        usbEntity.Close();
                                     }
-                                } else
-                                {
-                                    serial = usbEntityStr;
-                                }
-                                portData.SubItems.Add(serial);
 
-                                object mfg = usbEntity.GetValue("Mfg");
-                                if ( mfg!= null )
-                                    portData.SubItems.Add(mfg.ToString().Substring(mfg.ToString().LastIndexOf(';')+1));
-                                else
-                                    portData.SubItems.Add("");
-                                object desc = usbEntity.GetValue("DeviceDesc");
-                                if (desc != null)
-                                    portData.SubItems.Add(desc.ToString().Substring(desc.ToString().LastIndexOf(';') + 1));
-                                else
-                                    portData.SubItems.Add("");
-
-                                if ( !activeSerials.Contains(port.ToString()))
-                                {
-                                    portData.ForeColor = SystemColors.GrayText;
-                                    portData.BackColor = SystemColors.InactiveBorder;
-                                    portData.Selected = false;
                                 }
-                                if (showDisconnected.Checked || portData.ForeColor != SystemColors.GrayText)
-                                {
-                                    portList.Items.Add(portData);
-                                }
+                                usbDev.Close();
                             }
-                            usbEntity.Close();
                         }
-                        usbDev.Close();
                     }
+                    usbRoot.Close();
                 }
-                usbRoot.Close();
             }
-            
+
             portList.Sort();
         }
 
 
         class ListViewItemComparer : IComparer
         {
+            
             public int Compare(object x, object y)
             {
                 int xItem = Int32.Parse(((ListViewItem)x).SubItems[0].Text.Substring(3));
@@ -170,7 +187,15 @@ namespace ListUsbSerials
             terminal.StartInfo.Arguments = terminal.StartInfo.Arguments.Replace("{mfg}", hit.Item.SubItems[3].Text.ToString());
             terminal.StartInfo.Arguments = terminal.StartInfo.Arguments.Replace("{desc}", hit.Item.SubItems[3].Text.ToString());
 
-            terminal.Start();
+            try
+            {
+                terminal.Start();
+            }
+            catch (System.ComponentModel.Win32Exception)
+            {
+                MessageBox.Show("The specifed program (" + terminal.StartInfo.FileName + ") cannot be started", "Error",
+                MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void PortList_MouseClick(object sender, MouseEventArgs e)
