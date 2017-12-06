@@ -177,8 +177,19 @@ namespace ListUsbSerials
             ListViewHitTestInfo hit = portList.HitTest(localPoint);
 
             Process terminal = new Process();
-            terminal.StartInfo.FileName = Settings.Default["terminal"].ToString();
-            terminal.StartInfo.Arguments = Settings.Default["teminalargs"].ToString();
+            if (ModifierKeys.HasFlag(Keys.Shift))
+            {
+                terminal.StartInfo.FileName = Settings.Default["terminalb"].ToString();
+                terminal.StartInfo.Arguments = Settings.Default["teminalargsb"].ToString();
+            } else if (ModifierKeys.HasFlag(Keys.Control))
+            {
+                terminal.StartInfo.FileName = Settings.Default["terminalc"].ToString();
+                terminal.StartInfo.Arguments = Settings.Default["teminalargsc"].ToString();
+            } else
+            {
+                terminal.StartInfo.FileName = Settings.Default["terminal"].ToString();
+                terminal.StartInfo.Arguments = Settings.Default["teminalargs"].ToString();
+            }
             terminal.StartInfo.Arguments = terminal.StartInfo.Arguments.Replace("{device}", hit.Item.Text);
             terminal.StartInfo.Arguments = terminal.StartInfo.Arguments.Replace("{devicenum}", hit.Item.Text.Substring(3));
             terminal.StartInfo.Arguments = terminal.StartInfo.Arguments.Replace("{vid}", hit.Item.SubItems[1].Text.ToString());

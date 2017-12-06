@@ -1,5 +1,5 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="ListComPorts.Properties" GeneratedClassName="Settings">
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="ListUsbSerials.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
     <Setting Name="terminal" Type="System.String" Scope="User">
@@ -7,6 +7,18 @@
     </Setting>
     <Setting Name="teminalargs" Type="System.String" Scope="User">
       <Value Profile="(Default)">/BAUD=115200 /C={devicenum}</Value>
+    </Setting>
+    <Setting Name="terminalb" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="teminalargsb" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="terminalc" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="teminalargsc" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
   </Settings>
 </SettingsFile>

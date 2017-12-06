@@ -46,5 +46,53 @@ namespace ListUsbSerials.Properties {
                 this["teminalargs"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string terminalb {
+            get {
+                return ((string)(this["terminalb"]));
+            }
+            set {
+                this["terminalb"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string teminalargsb {
+            get {
+                return ((string)(this["teminalargsb"]));
+            }
+            set {
+                this["teminalargsb"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string terminalc {
+            get {
+                return ((string)(this["terminalc"]));
+            }
+            set {
+                this["terminalc"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string teminalargsc {
+            get {
+                return ((string)(this["teminalargsc"]));
+            }
+            set {
+                this["teminalargsc"] = value;
+            }
+        }
     }
 }
